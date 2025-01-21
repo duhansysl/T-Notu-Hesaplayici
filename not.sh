@@ -37,14 +37,17 @@ read -p " Sınıf ortalaması (DSN)  : " sinif_ortalama
 read -p " Standart sapma          : " standart_sapma
 
 # Yarıyıl içi ve yarıyıl sonu notlarını yüzdelik ağırlıklarla hesapla
-yariyil_ici_agirlikli=$(echo "scale=2; $yariyil_ici * $yariyil_ici_yuzde / 100" | bc -l)
-yariyil_sonu_agirlikli=$(echo "scale=2; $yariyil_sonu * $yariyil_sonu_yuzde / 100" | bc -l)
+yariyil_ici_agirlikli=$(echo "scale=10; $yariyil_ici * $yariyil_ici_yuzde / 100" | bc -l)
+yariyil_sonu_agirlikli=$(echo "scale=10; $yariyil_sonu * $yariyil_sonu_yuzde / 100" | bc -l)
 
 # Toplam notu hesapla
-toplam_not=$(echo "scale=2; $yariyil_ici_agirlikli + $yariyil_sonu_agirlikli" | bc -l)
+toplam_not=$(echo "scale=10; $yariyil_ici_agirlikli + $yariyil_sonu_agirlikli" | bc -l)
 
 # T notunu hesapla
-t_notu=$(echo "scale=2; (($toplam_not - $sinif_ortalama) / $standart_sapma) * 10 + 50" | bc -l)
+t_notu=$(echo "scale=10; (($toplam_not - $sinif_ortalama) / $standart_sapma) * 10 + 50" | bc -l)
+
+# awk ile iki basamaklı formata çevir
+t_notu_formatli=$(echo "$t_notu" | awk '{printf "%.2f", $1}')
 
 # Sınıf durumları ve aralıkları (DSN)
 sinif_durumlar=("Mükemmel" "Çok İyi" "İyi" "Ortanın Üstü" "Orta" "Zayıf" "Kötü")
@@ -134,7 +137,7 @@ echo "-----------------------------------------------------------"
 echo
 echo " Sınıf Başarı Durumu        : $sinif_durum"
 echo " Bulunduğunuz Not Aralığı   : $not_aralik"
-echo " T-standart Notu            : $t_notu"
+echo " T-standart Notu            : $t_notu_formatli"
 echo " Aldığınız Harf Notu        : $harf_notu"
 echo " Başarı Durumu              : $kosul_durumu"
 echo
