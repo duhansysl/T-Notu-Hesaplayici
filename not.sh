@@ -30,11 +30,12 @@ gecme_notu="40"    # Üniversitenin belirlemiş olduğu minimum geçme notu
 # Kullanıcıdan gerekli bilgileri al
 clear; echo
 read -p " Yarıyıl içi ortalaması  : " yariyil_ici
-read -p " Yarıyıl içi yüzdesi     : " yariyil_ici_yuzde
 read -p " Yarıyıl sonu notu       : " yariyil_sonu
 read -p " Yarıyıl sonu yüzdesi    : " yariyil_sonu_yuzde
 read -p " Sınıf ortalaması (DSN)  : " sinif_ortalama
 read -p " Standart sapma          : " standart_sapma
+
+yariyil_ici_yuzde=$(echo "scale=10; 100 - $yariyil_sonu_yuzde" | bc -l)
 
 # Yarıyıl içi ve yarıyıl sonu notlarını yüzdelik ağırlıklarla hesapla
 yariyil_ici_agirlikli=$(echo "scale=10; $yariyil_ici * $yariyil_ici_yuzde / 100" | bc -l)
